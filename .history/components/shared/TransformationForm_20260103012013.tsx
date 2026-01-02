@@ -89,12 +89,8 @@ const TransformationForm = ({
 
     if (data || image) {
       const transformationUrl = getCldImageUrl({
-        ...(type === "fill"
-          ? {}
-          : {
-              width: image?.width,
-              height: image?.height,
-            }),
+        width: image?.width,
+        height: image?.height,
         src: image?.publicId,
         ...transformationConfig,
       });
@@ -161,15 +157,15 @@ const TransformationForm = ({
     const imageSize = aspectRatioOptions[value as AspectRatioKey];
 
     setImage((prevState: any) => ({
-      ...prevState,
-      aspectRatio: imageSize.aspectRatio,
-      ...(type === "fill"
-        ? {} // 🚫 do NOT set width/height for fill
-        : {
-            width: imageSize.width,
-            height: imageSize.height,
-          }),
-    }));
+  ...prevState,
+  aspectRatio: imageSize.aspectRatio,
+  ...(type === "fill"
+    ? {} // 🚫 do NOT set width/height for fill
+    : {
+        width: imageSize.width,
+        height: imageSize.height,
+      }),
+}));
 
     setNewTransformation(transformationType.config);
 

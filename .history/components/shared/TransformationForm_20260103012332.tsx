@@ -89,15 +89,15 @@ const TransformationForm = ({
 
     if (data || image) {
       const transformationUrl = getCldImageUrl({
-        ...(type === "fill"
-          ? {}
-          : {
-              width: image?.width,
-              height: image?.height,
-            }),
-        src: image?.publicId,
-        ...transformationConfig,
-      });
+  ...(type === "fill"
+    ? {}
+    : {
+        width: image?.width,
+        height: image?.height,
+      }),
+  src: image?.publicId,
+  ...transformationConfig,
+});
 
       const imageData = {
         title: values.title,

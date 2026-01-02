@@ -58,6 +58,7 @@ const TransformedImage = ({
                   width: getImageSize(type, image, "width"),
                   height: getImageSize(type, image, "height"),
                 })}
+            {...transformationConfig}
             src={image?.publicId}
             alt={image.title}
             sizes={"(max-width: 767px) 100vw, 50vw"}
