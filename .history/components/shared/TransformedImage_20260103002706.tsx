@@ -50,21 +50,21 @@ const TransformedImage = ({
       {image?.publicId && transformationConfig ? (
         <div className="relative">
           <CldImage
-            src={image?.publicId}
-            alt={image?.title || "Transformed image"}
-            sizes="(max-width: 767px) 100vw, 50vw"
-            placeholder={dataUrl as PlaceholderValue}
-            className="transformed-image"
-            onLoad={() => {
-              setIsTransforming && setIsTransforming(false);
-            }}
-            onError={() => {
-              debounce(() => {
-                setIsTransforming && setIsTransforming(false);
-              }, 8000)();
-            }}
-            {...transformationConfig}
-          />
+  src={image?.publicId}
+  alt={image?.title || "Transformed image"}
+  sizes="(max-width: 767px) 100vw, 50vw"
+  placeholder={dataUrl as PlaceholderValue}
+  className="transformed-image"
+  onLoad={() => {
+    setIsTransforming && setIsTransforming(false);
+  }}
+  onError={() => {
+    debounce(() => {
+      setIsTransforming && setIsTransforming(false);
+    }, 8000)();
+  }}
+  {...transformationConfig}
+/>
 
           {isTransforming && (
             <div className="transforming-loader">

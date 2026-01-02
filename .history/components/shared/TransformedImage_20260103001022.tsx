@@ -50,9 +50,11 @@ const TransformedImage = ({
       {image?.publicId && transformationConfig ? (
         <div className="relative">
           <CldImage
+            width={getImageSize(type, image, "width")}
+            height={getImageSize(type, image, "height")}
             src={image?.publicId}
-            alt={image?.title || "Transformed image"}
-            sizes="(max-width: 767px) 100vw, 50vw"
+            alt={image.title}
+            sizes={"(max-width: 767px) 100vw, 50vw"}
             placeholder={dataUrl as PlaceholderValue}
             className="transformed-image"
             onLoad={() => {

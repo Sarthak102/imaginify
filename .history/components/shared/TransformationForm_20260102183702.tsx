@@ -73,6 +73,8 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
     if(data || image) {
       const transformationUrl = getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
         src: image?.publicId,
         ...transformationConfig
       })
