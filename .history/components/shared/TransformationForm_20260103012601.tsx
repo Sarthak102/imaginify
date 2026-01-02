@@ -73,8 +73,6 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
     if(data || image) {
       const transformationUrl = getCldImageUrl({
-        width: image?.width,
-        height: image?.height,
         src: image?.publicId,
         ...transformationConfig
       })
@@ -83,8 +81,8 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
         title: values.title,
         publicId: image?.publicId,
         transformationType: type,
-        width: image?.width,
-        height: image?.height,
+        width: type === "fill" ? undefined : image?.width,
+        height: type === "fill" ? undefined : image?.height,
         config: transformationConfig,
         secureURL: image?.secureURL,
         transformationURL: transformationUrl,
@@ -138,11 +136,15 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     const imageSize = aspectRatioOptions[value as AspectRatioKey]
 
     setImage((prevState: any) => ({
-      ...prevState,
-      aspectRatio: imageSize.aspectRatio,
-      width: imageSize.width,
-      height: imageSize.height,
-    }))
+    ...prevState,
+    aspectRatio: imageSize.aspectRatio,
+    ...(type === "fill"
+      ? {} // 🔥 DO NOT set width/height for fill
+      : {
+          width: imageSize.width,
+          height: imageSize.height,
+        }),
+  }));
 
     setNewTransformation(transformationType.config);
 
@@ -166,9 +168,17 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   const onTransformHandler = async () => {
     setIsTransforming(true)
 
-    setTransformationConfig(
-      deepMergeObjects(newTransformation, transformationConfig)
-    )
+    setTransformationConfig((prev) => {
+      const merged = deepMergeObjects(newTransformation, prev);
+
+      // 🔥 CRITICAL: generative fill cannot mix dimensions + aspectRatio
+      if (type === "fill" && merged?.aspectRatio) {
+        delete merged.width;
+        delete merged.height;
+      }
+
+      return merged;
+    });
 
     setNewTransformation(null)
 
