@@ -81,8 +81,8 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
         title: values.title,
         publicId: image?.publicId,
         transformationType: type,
-        width: type === "fill" ? undefined : image?.width,
-        height: type === "fill" ? undefined : image?.height,
+        width: image?.width,
+        height: image?.height,
         config: transformationConfig,
         secureURL: image?.secureURL,
         transformationURL: transformationUrl,
@@ -164,17 +164,9 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   const onTransformHandler = async () => {
     setIsTransforming(true)
 
-    setTransformationConfig((prev) => {
-      const merged = deepMergeObjects(newTransformation, prev);
-
-      // 🔥 CRITICAL: generative fill cannot mix dimensions + aspectRatio
-      if (type === "fill" && merged?.aspectRatio) {
-        delete merged.width;
-        delete merged.height;
-      }
-
-      return merged;
-    });
+    setTransformationConfig(
+      deepMergeObjects(newTransformation, transformationConfig)
+    )a
 
     setNewTransformation(null)
 
