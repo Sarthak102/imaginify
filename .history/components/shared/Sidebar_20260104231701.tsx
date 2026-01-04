@@ -1,7 +1,7 @@
 "use client";
 
 import { navLinks } from "@/constants";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,7 @@ const Sidebar = () => {
 
         <nav className="sidebar-nav">
           <SignedIn>
+            {/* Main nav */}
             <ul className="sidebar-nav_elements">
               {navLinks.slice(0, 6).map((link) => {
                 const isActive = link.route === pathname;
@@ -40,10 +41,10 @@ const Sidebar = () => {
                     <Link className="sidebar-link" href={link.route}>
                       <Image
                         src={link.icon}
-                        alt="logo"
+                        alt={link.label}
                         width={24}
                         height={24}
-                        className={`${isActive && "brightness-200"}`}
+                        className={isActive ? "brightness-200" : ""}
                       />
                       {link.label}
                     </Link>
@@ -52,6 +53,7 @@ const Sidebar = () => {
               })}
             </ul>
 
+            {/* Secondary nav + profile */}
             <ul className="sidebar-nav_elements">
               {navLinks.slice(6).map((link) => {
                 const isActive = link.route === pathname;
@@ -68,10 +70,10 @@ const Sidebar = () => {
                     <Link className="sidebar-link" href={link.route}>
                       <Image
                         src={link.icon}
-                        alt="logo"
+                        alt={link.label}
                         width={24}
                         height={24}
-                        className={`${isActive && "brightness-200"}`}
+                        className={isActive ? "brightness-200" : ""}
                       />
                       {link.label}
                     </Link>
@@ -79,8 +81,18 @@ const Sidebar = () => {
                 );
               })}
 
-              <li className="flex-center cursor-pointer gap-2 p-4">
+              {/* Divider */}
+              <hr className="my-2 border-gray-200" />
+
+              {/* User + Logout */}
+              <li className="flex flex-col gap-3 p-4">
                 <UserButton afterSignOutUrl="/" showName />
+
+                <SignOutButton redirectUrl="/">
+                  <button className="w-full rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600">
+                    Logout
+                  </button>
+                </SignOutButton>
               </li>
             </ul>
           </SignedIn>

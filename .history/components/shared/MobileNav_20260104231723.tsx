@@ -2,7 +2,7 @@
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { navLinks } from "@/constants";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,8 +36,9 @@ const MobileNav = () => {
                 className="cursor-pointer"
               />
             </SheetTrigger>
+
             <SheetContent className="sheet-content sm:w-64">
-              <>
+              <div className="flex flex-col gap-6">
                 <Image
                   src="/assets/images/logo-text.svg"
                   alt="logo"
@@ -51,18 +52,18 @@ const MobileNav = () => {
 
                     return (
                       <li
-                        className={`${
-                          isActive && "gradient-text"
-                        } p-18 flex whitespace-nowrap text-dark-700`}
                         key={link.route}
+                        className={`p-18 flex whitespace-nowrap ${
+                          isActive ? "gradient-text" : "text-dark-700"
+                        }`}
                       >
                         <Link
-                          className="sidebar-link cursor-pointer"
                           href={link.route}
+                          className="sidebar-link cursor-pointer"
                         >
                           <Image
                             src={link.icon}
-                            alt="logo"
+                            alt={link.label}
                             width={24}
                             height={24}
                           />
@@ -72,7 +73,17 @@ const MobileNav = () => {
                     );
                   })}
                 </ul>
-              </>
+
+                {/* Divider */}
+                <hr className="border-gray-200" />
+
+                {/* Logout */}
+                <SignOutButton redirectUrl="/">
+                  <button className="w-full rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600">
+                    Logout
+                  </button>
+                </SignOutButton>
+              </div>
             </SheetContent>
           </Sheet>
         </SignedIn>
